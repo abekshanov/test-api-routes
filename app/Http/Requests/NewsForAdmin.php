@@ -6,16 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class NewsForAdmin extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function all($keys = null)
     {
-        return false;
+        $data = parent::all($keys);
+        return array_merge($data, ['id' => $this->route('id')]);
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,7 +19,7 @@ class NewsForAdmin extends FormRequest
     public function rules()
     {
         return [
-            //
+            'id' => 'required | integer',
         ];
     }
 }

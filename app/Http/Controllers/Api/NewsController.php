@@ -13,6 +13,7 @@ use App\Http\Resources\DataResult;
 use App\Http\Resources\NewsResource;
 use App\Http\Resources\NewsResourceCollection;
 use App\Services\NewsService;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class NewsController extends Controller
 {
@@ -23,10 +24,10 @@ class NewsController extends Controller
         $this->newsService = $newsService;
     }
 
-    public function getNewsList(NewsListRequest $request): NewsResourceCollection
+    public function getNewsList(NewsListRequest $request): NewsResource
     {
         $newsList = $this->newsService->getNewsList($request->validated());
-        return new NewsResourceCollection($newsList);
+        return new NewsResource($newsList);
     }
 
     public function getNews(NewsRequest $request): NewsResource
@@ -35,10 +36,10 @@ class NewsController extends Controller
         return new NewsResource($news);
     }
 
-    public function getNewsListForAdmin(NewsListForAdmin $request): NewsResourceCollection
+    public function getNewsListForAdmin(NewsListForAdmin $request): NewsResource
     {
         $newsList = $this->newsService->getNewsListForAdmin($request->validated());
-        return new NewsResourceCollection($newsList);
+        return new NewsResource($newsList);
     }
 
     public function getNewsForAdmin(NewsForAdmin $request): NewsResource
@@ -53,9 +54,9 @@ class NewsController extends Controller
         return new NewsResource($news);
     }
 
-    public function updateNewsStatus(UpdateNewsStatusRequest $request): DataResult
+    public function updateNewsStatus(UpdateNewsStatusRequest $request)
     {
         $isUpdated = $this->newsService->updateNewsStatus($request->validated());
-        return (new DataResult($isUpdated))->result;
+        return (new DataResult($isUpdated))->result();
     }
 }

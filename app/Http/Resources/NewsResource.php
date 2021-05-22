@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 class NewsResource extends JsonResource
 {
@@ -15,8 +17,9 @@ class NewsResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'data' => parent::toArray($request),
+            'data' => ($this instanceof Collection || $this instanceof EloquentCollection) ? $this->collection : $this->resource,
             'errors' => false
         ];
+
     }
 }

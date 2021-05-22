@@ -17,7 +17,7 @@ class CreateNewsTable extends Migration
             $table->id();
             $table->string('title', 255);
             $table->text('body');
-            $table->foreignId('status')->constrained('news_statuses');
+            $table->foreignId('status')->nullable()->constrained('news_statuses');
             $table->timestamps();
         });
     }
