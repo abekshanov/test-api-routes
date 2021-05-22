@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Http\Resources\DataResult;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -34,8 +35,15 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (Throwable $e, $request) {
+            return $this->handleException($request, $e);
         });
+    }
+
+    public function handleException($request, Throwable $e)
+    {
+        if($e instanceof ApiException) {
+            return response((new DataResult($e->getMessage(), true))->result(), $e->getCode());
+        }
     }
 }

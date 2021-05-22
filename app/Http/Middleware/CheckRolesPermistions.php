@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\ApiException;
 use App\Models\Role;
 use App\Models\User;
 use Closure;
@@ -19,7 +20,7 @@ class CheckRolesPermistions
     public function handle(Request $request, Closure $next, string $role)
     {
         if (! $this->hasRole($request->user(), $role)) {
-            throw new \Exception('У вас нет прав', 403);
+            throw new ApiException('У вас нет прав', 403);
         }
         return $next($request);
     }
